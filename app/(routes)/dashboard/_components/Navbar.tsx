@@ -1,28 +1,55 @@
 import PrimaryButton from '@/components/Buttons/PrimaryButton';
-import { useState } from 'react';
+import useDashboard from '@/hooks/useDashboard';
+import { useEffect, useState } from 'react';
 
 export default function Navbar() {
+    const { allFiles, setFiles, activeTab, setActiveTab } = useDashboard();
+
     const navItems = [
         {
             label: 'All Files',
-            action: () => {},
         },
         {
             label: 'Recents',
-            action: () => {},
         },
         {
             label: 'Created by Me',
-            action: () => {},
         },
         {
             label: 'Private Files',
-            action: () => {},
         },
     ];
 
     const [activeNavlink, setActiveNavlink] = useState<string>(navItems[0].label);
 
+    useEffect(() => {
+        if (activeTab === 'Archive') {
+            const _files = allFiles.filter((f) => f.isArchieved === true);
+            setFiles(_files);
+            return;
+        }
+        if (activeNavlink === 'All Files') {
+            const _files = allFiles.filter((f) => f.isArchieved === false);
+            setFiles(_files);
+        }
+    }, [activeNavlink, allFiles, setFiles, activeTab]);
+
+    if (activeTab === 'Archive')
+        return (
+            <div className='px-4 ps-6 flex items-center justify-between mt-1'>
+                <h3 className='py-4 border-b-4 border-transparent'>
+                    <span
+                        className='text-orange-600 cursor-pointer hover:underline'
+                        onClick={() => {
+                            setActiveTab('Home');
+                        }}
+                    >
+                        Dashboard
+                    </span>{' '}
+                    / Archive
+                </h3>
+            </div>
+        );
     return (
         <div className='px-4 ps-6 flex items-center justify-between mt-1'>
             <div>
@@ -32,7 +59,6 @@ export default function Navbar() {
                             key={index}
                             onClick={() => {
                                 setActiveNavlink(navItem.label);
-                                navItem.action();
                             }}
                             className={
                                 activeNavlink === navItem.label

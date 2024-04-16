@@ -18,6 +18,10 @@ interface IDashboardContext {
     getAllTeamFiles: () => void;
     filesLoading: boolean;
     files: IFile[];
+    allFiles: IFile[];
+    setFiles: React.Dispatch<React.SetStateAction<IFile[]>>;
+    activeTab: string;
+    setActiveTab: React.Dispatch<React.SetStateAction<string>>;
 }
 
 export const DashboardContext = createContext<IDashboardContext | undefined>(undefined);
@@ -32,11 +36,13 @@ export default function DashboardProvider({
     const searchParams = useSearchParams();
     const { user } = useKindeBrowserClient();
 
+    const [activeTab, setActiveTab] = useState<string>('Home');
     const [userData, setUserData] = useState<IUser | null>(null);
     const [teamsData, setTeamsData] = useState<ITeam[]>([]);
     const [selectedTeam, setSelectedTeam] = useState<ITeam | null>(null);
     const [filesLoading, setFilesLoading] = useState<boolean>(false);
     const [files, setFiles] = useState<IFile[]>([]);
+    const [allFiles, setAllFiles] = useState<IFile[]>([]);
 
     const createUser = useCallback(async () => {
         try {
@@ -107,6 +113,7 @@ export default function DashboardProvider({
 
             if (result) {
                 toast('Great! Your new file has been successfully created.');
+                toast('Redirecting to your workspace ...');
                 router.push(`/workspaces/${result}`);
             }
         } catch (error) {
@@ -114,14 +121,16 @@ export default function DashboardProvider({
         }
     };
 
-    const getAllTeamFiles = async () => {
+    const getAllTeamFiles = useCallback(async () => {
+        if (!userData?.kindeId || !selectedTeam?._id) return;
         setFilesLoading(true);
         try {
             const result = await convex.query(api.files.getAllTeamFiles, {
-                authorId: userData?.kindeId ? userData?.kindeId : '',
-                teamId: selectedTeam?._id ? selectedTeam?._id : '',
+                authorId: userData.kindeId,
+                teamId: selectedTeam._id,
             });
-            setFiles(result);
+            setAllFiles(result);
+            setFiles(result.filter((f) => f.isArchieved === true));
         } catch (error) {
             toast('Uhh ohh, Error while retrieving the files.', {
                 description:
@@ -131,7 +140,7 @@ export default function DashboardProvider({
         } finally {
             setFilesLoading(false);
         }
-    };
+    }, [convex, selectedTeam?._id, userData?.kindeId]);
 
     useEffect(() => {
         if (!userData) getUser();
@@ -155,6 +164,10 @@ export default function DashboardProvider({
         }
     }, [searchParams, teamsData]);
 
+    useEffect(() => {
+        getAllTeamFiles();
+    }, [getAllTeamFiles]);
+
     const payload: IDashboardContext = {
         userData,
         teamsData,
@@ -163,6 +176,10 @@ export default function DashboardProvider({
         getAllTeamFiles,
         filesLoading,
         files,
+        allFiles,
+        setFiles,
+        activeTab,
+        setActiveTab,
     };
 
     if (teamsData.length === 0) return <DashboardLoading />;

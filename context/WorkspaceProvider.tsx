@@ -74,7 +74,8 @@ export default function WorkspaceProvider({
                     router.back();
                 }
             } catch (error) {
-                toast('Uhh ohh, Something went wrong. Please try again later');
+                console.log(error);
+                // toast('Uhh ohh, Something went wrong. Please try again later');
             } finally {
                 setIsLoading(false);
             }

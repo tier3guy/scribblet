@@ -28,6 +28,10 @@ export function toTimeSinceString(value: string): string {
     // Calculate the time difference in seconds
     const ts = Math.floor((now.getTime() - date.getTime()) / 1000);
 
+    if (ts < 0) {
+        return 'one second ago';
+    }
+
     // Determine the appropriate time unit and format the result string
     if (ts < 1 * MINUTE) {
         return ts === 1 ? 'one second ago' : `${ts} seconds ago`;

@@ -85,7 +85,7 @@ export const updateArchieveStatus = mutation({
     handler: async (ctx, args) => {
         const { fileId, isArchieved } = args;
         return await ctx.db.patch(fileId, {
-            isArchieved,
+            isArchieved: isArchieved,
         });
     },
 });
@@ -115,5 +115,15 @@ export const updateFileName = mutation({
             fileName,
             lastEditedAt: Date.now(),
         });
+    },
+});
+
+export const deleteFile = mutation({
+    args: {
+        fileId: v.id('files'),
+    },
+    handler: async (ctx, args) => {
+        const { fileId } = args;
+        return await ctx.db.delete(fileId);
     },
 });

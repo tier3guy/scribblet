@@ -1,12 +1,12 @@
 import Logo from '@/components/Logo';
 import TeamsSelector from './TeamsSelector';
-import { Paperclip, Archive, Github, Flag } from 'lucide-react';
+import { Paperclip, Archive, Github, Flag, Home } from 'lucide-react';
 import useDashboard from '@/hooks/useDashboard';
 import { useEffect } from 'react';
 import Link from 'next/link';
 
 export default function Sidebar() {
-    const { createNewFileHandler } = useDashboard();
+    const { createNewFileHandler, activeTab } = useDashboard();
 
     useEffect(() => {
         const handleKeyDown = (event: any) => {
@@ -38,14 +38,29 @@ export default function Sidebar() {
                     </div>
                 </div>
                 <div className='text-sm'>
-                    <SidebarButton label='Getting Started' icon={<Flag size={16} />} shortcut='S' />
+                    <SidebarButton
+                        label='Home'
+                        icon={<Home size={16} />}
+                        shortcut='H'
+                        active={activeTab === 'Home'}
+                    />
+                    <SidebarButton
+                        label='Getting Started'
+                        icon={<Flag size={16} />}
+                        shortcut='S'
+                        active={activeTab === 'Getting Started'}
+                    />
                     <SidebarButton
                         label='Create New File'
                         icon={<Paperclip size={16} />}
                         shortcut='ALT + N'
                         onClick={createNewFileHandler}
                     />
-                    <SidebarButton label='Archive' icon={<Archive size={16} />} />
+                    <SidebarButton
+                        label='Archive'
+                        icon={<Archive size={16} />}
+                        active={activeTab === 'Archive'}
+                    />
                     <SidebarButton
                         label='Github Sync [Beta]'
                         icon={<Github size={16} />}
@@ -94,10 +109,19 @@ function SidebarButton({
     active = false,
     disbaled = false,
 }: ISidebarButton) {
+    const { setActiveTab } = useDashboard();
+
     return (
         <button
-            className={`w-full flex items-center justify-between p-4 py-3  ${active ? 'bg-orange-500 text-white' : 'hover:bg-gray-50'} ${disbaled ? 'text-gray-500 cursor-not-allowed' : ''}`}
-            onClick={disbaled ? () => {} : onClick}
+            className={`w-full flex items-center justify-between p-4 py-3  ${active ? 'bg-orange-50 text-black' : ''} ${disbaled ? 'text-gray-500 cursor-not-allowed' : ''}`}
+            onClick={
+                disbaled
+                    ? () => {}
+                    : () => {
+                          setActiveTab(label);
+                          onClick();
+                      }
+            }
         >
             <div className='flex items-center gap-2'>
                 {icon}

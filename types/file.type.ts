@@ -12,4 +12,6 @@ export type IFile = {
     lastEditedAt: string;
     document: string;
     canvas: string;
+    isArchieved: boolean;
+    collaborators: Array<string>;
 };
