@@ -11,7 +11,7 @@ export default function Workspace() {
 
     return (
         <Tabs defaultValue='Both' className='h-screen w-screen overflow-hidden flex flex-col'>
-            <div className='w-full'>
+            <div className='w-full z-50'>
                 <Navbar />
             </div>
             <div className='flex-1 overflow-hidden'>

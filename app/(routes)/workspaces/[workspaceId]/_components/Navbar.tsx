@@ -2,6 +2,7 @@ import PrimaryButton from '@/components/Buttons/PrimaryButton';
 import Logo from '@/components/Logo';
 import useWorkspace from '@/hooks/useWorkspace';
 import { TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 
 export default function Navbar() {
     const { tabsItems, fileName } = useWorkspace();
@@ -16,6 +17,24 @@ export default function Navbar() {
             <div className='absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center gap-4'>
                 <TabsList className='rounded-full'>
                     {tabsItems.map((tab: string, index: number) => {
+                        if (tab === 'Canvas') {
+                            return (
+                                <Tooltip key={index}>
+                                    <TooltipTrigger className='text-sm font-medium px-4 cursor-not-allowed'>
+                                        {tab}
+                                    </TooltipTrigger>
+                                    <TooltipContent className='bg-gray-50 max-w-[200px]'>
+                                        <p className='text-black'>
+                                            We are sorry but we are working on the{' '}
+                                            <span className='text-orange-600'>
+                                                Only Canvas Mode
+                                            </span>
+                                            . Till then please wait for the next release.
+                                        </p>
+                                    </TooltipContent>
+                                </Tooltip>
+                            );
+                        }
                         return (
                             <TabsTrigger key={index} value={tab} className='rounded-full'>
                                 <p>{tab}</p>
