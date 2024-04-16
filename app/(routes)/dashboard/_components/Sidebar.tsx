@@ -3,6 +3,7 @@ import TeamsSelector from './TeamsSelector';
 import { Paperclip, Archive, Github, Flag } from 'lucide-react';
 import useDashboard from '@/hooks/useDashboard';
 import { useEffect } from 'react';
+import Link from 'next/link';
 
 export default function Sidebar() {
     const { createNewFileHandler } = useDashboard();
@@ -55,11 +56,22 @@ export default function Sidebar() {
 
             <div className='text-sm px-4 border-t-[1.5px] pt-2'>
                 This project is <span>free</span> and{' '}
-                <span className='text-orange-500  cursor-pointer hover:underline'>
+                <Link
+                    href={'https://github.com/tier3guy/scribblet'}
+                    target='__blank'
+                    className='text-orange-500  cursor-pointer hover:underline'
+                >
                     Open-Sourced
-                </span>
+                </Link>
                 . If you want to support this project kindly visit{' '}
-                <span className='text-orange-500 cursor-pointer hover:underline'>here</span>.
+                <Link
+                    href={'https://www.buymeacoffee.com/tier3guy'}
+                    target='__blank'
+                    className='text-orange-500 cursor-pointer hover:underline'
+                >
+                    here
+                </Link>
+                .
             </div>
         </div>
     );
