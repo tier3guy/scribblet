@@ -66,10 +66,10 @@ function TableRow({ file }: ITableRow) {
         <div className='flex text-sm py-3 px-6 cursor-pointer relative'>
             <div className='w-[29%] pe-4'>
                 <Link href={`/workspaces/${file._id}`}>
-                    <p className='line-clamp-1 underline flex items-center gap-1'>
-                        <SquareArrowOutUpRight size={16} />
-                        {file.fileName}
-                    </p>
+                    <div className='flex items-center gap-1'>
+                        {/* <SquareArrowOutUpRight className='w-4' /> */}
+                        <p className='line-clamp-1 overflow-hidden underline'>{file.fileName}</p>
+                    </div>
                 </Link>
             </div>
             <div className='w-[25%] pe-4'>

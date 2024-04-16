@@ -3,7 +3,7 @@ import useDashboard from '@/hooks/useDashboard';
 import { useEffect, useState } from 'react';
 
 export default function Navbar() {
-    const { allFiles, setFiles, activeTab, setActiveTab } = useDashboard();
+    const { allFiles, setFiles, activeTab, setActiveTab, setFilesLoading } = useDashboard();
 
     const navItems = [
         {
@@ -26,13 +26,13 @@ export default function Navbar() {
         if (activeTab === 'Archive') {
             const _files = allFiles.filter((f) => f.isArchieved === true);
             setFiles(_files);
-            return;
-        }
-        if (activeNavlink === 'All Files') {
+        } else if (activeNavlink === 'All Files') {
             const _files = allFiles.filter((f) => f.isArchieved === false);
             setFiles(_files);
         }
-    }, [activeNavlink, allFiles, setFiles, activeTab]);
+
+        setFilesLoading(false);
+    }, [activeNavlink, allFiles, setFiles, activeTab, setFilesLoading]);
 
     if (activeTab === 'Archive')
         return (

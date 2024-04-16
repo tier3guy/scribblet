@@ -17,6 +17,7 @@ interface IDashboardContext {
     createNewFileHandler: () => void;
     getAllTeamFiles: () => void;
     filesLoading: boolean;
+    setFilesLoading: React.Dispatch<React.SetStateAction<boolean>>;
     files: IFile[];
     allFiles: IFile[];
     setFiles: React.Dispatch<React.SetStateAction<IFile[]>>;
@@ -137,9 +138,10 @@ export default function DashboardProvider({
                     'Possible reasons could be network issues or server problems. Please try again after some time.',
                 descriptionClassName: 'mt-2',
             });
-        } finally {
-            setFilesLoading(false);
         }
+        // finally {
+        //     // setFilesLoading(false);
+        // }
     }, [convex, selectedTeam?._id, userData?.kindeId]);
 
     useEffect(() => {
@@ -175,6 +177,7 @@ export default function DashboardProvider({
         createNewFileHandler,
         getAllTeamFiles,
         filesLoading,
+        setFilesLoading,
         files,
         allFiles,
         setFiles,

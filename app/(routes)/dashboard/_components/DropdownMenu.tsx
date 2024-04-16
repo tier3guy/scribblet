@@ -4,6 +4,10 @@ import { IFile } from '@/types/file.type';
 import { useConvex } from 'convex/react';
 import { Link2, Pencil, Archive, Share, Copy, ArchiveRestore, Trash } from 'lucide-react';
 import { toast } from 'sonner';
+import { DialogTrigger, Dialog } from '@/components/ui/dialog';
+import RenameDialogBox from './RenameDialogBox';
+import DeleteConfirmationDialogBox from './DeleteConfirmationDialogBox';
+import ShareDialogBox from './ShareDialogBox';
 
 interface IDropdownMenuProps {
     file: IFile;
@@ -13,10 +17,11 @@ interface IDropdownMenuProps {
 
 export function HomeDropdownMenu({ file, open, setOpen }: IDropdownMenuProps) {
     const convex = useConvex();
-    const { getAllTeamFiles } = useDashboard();
+    const { getAllTeamFiles, userData } = useDashboard();
 
     const handleDoArchieve = async () => {
         try {
+            toast('Archieving ...');
             if (file._id) {
                 await convex.mutation(api.files.updateArchieveStatus, {
                     fileId: file._id,
@@ -35,14 +40,35 @@ export function HomeDropdownMenu({ file, open, setOpen }: IDropdownMenuProps) {
         }
     };
 
-    const handleRenameFile = async () => {
+    const handleCopyLink = async () => {
+        try {
+            const link = `http://localhost:3000/workspaces/${file._id}`;
+            await navigator.clipboard.writeText(link);
+            toast('Link has been copied to you clipboard.');
+        } catch (error) {
+            console.log(error);
+            toast('Oops, something went wrong !');
+        } finally {
+            setOpen(false);
+        }
+    };
+
+    const handleDuplicateFile = async () => {
         try {
             if (file._id) {
-                await convex.mutation(api.files.updateFileName, {
-                    fileId: file._id,
-                    fileName: 'Expense DB Modeling',
+                await convex.mutation(api.files.duplicateFile, {
+                    fileName: file?.fileName || '',
+                    teamId: file?.teamId || '',
+                    teamName: file?.teamName || '',
+                    authorId: userData?.kindeId || '',
+                    authorEmail: userData?.email || '',
+                    isPrivate: file?.isPrivate || false,
+                    isArchieved: file?.isArchieved || false,
+                    document: file?.document || '',
+                    canvas: file?.canvas || '',
+                    collaborators: file?.collaborators || [],
                 });
-                toast('Your file has been renamed successfully.');
+                toast('Duplicate file has been created successfully.');
             }
         } catch (error) {
             console.log(error);
@@ -58,25 +84,38 @@ export function HomeDropdownMenu({ file, open, setOpen }: IDropdownMenuProps) {
         <div className='absolute top-[80%] right-8 z-50'>
             <div className='bg-white shadow rounded p-1 min-w-[200px]'>
                 <div className='flex flex-col'>
-                    <div className='flex items-center gap-3 text-sm text-gray-600 hover:bg-gray-100 cursor-pointer px-3 py-2 rounded'>
+                    <div
+                        className='flex items-center gap-3 text-sm text-gray-600 hover:bg-gray-100 cursor-pointer px-3 py-2 rounded'
+                        onClick={handleCopyLink}
+                    >
                         <Link2 className='h-4 w-4' />
                         <p>Copy Link</p>
                     </div>
-                    <div className='flex items-center gap-3 text-sm text-gray-600 hover:bg-gray-100 cursor-pointer px-3 py-2 rounded'>
-                        <Share className='h-4 w-4' />
-                        <p>Share</p>
-                    </div>
-                    <div className='flex items-center gap-3 text-sm text-gray-600 hover:bg-gray-100 cursor-pointer px-3 py-2 rounded'>
+                    <Dialog>
+                        <DialogTrigger>
+                            <div className='flex items-center gap-3 text-sm text-gray-600 hover:bg-gray-100 cursor-pointer px-3 py-2 rounded'>
+                                <Share className='h-4 w-4' />
+                                <p>Share</p>
+                            </div>
+                            <ShareDialogBox file={file} open={open} setOpen={setOpen} />
+                        </DialogTrigger>
+                    </Dialog>
+                    <div
+                        className='flex items-center gap-3 text-sm text-gray-600 hover:bg-gray-100 cursor-pointer px-3 py-2 rounded'
+                        onClick={handleDuplicateFile}
+                    >
                         <Copy className='h-4 w-4' />
                         <p>Duplicate</p>
                     </div>
-                    <div
-                        className='flex items-center gap-3 text-sm text-gray-600 hover:bg-gray-100 cursor-pointer px-3 py-2 rounded'
-                        onClick={handleRenameFile}
-                    >
-                        <Pencil className='h-4 w-4' />
-                        <p>Rename</p>
-                    </div>
+                    <Dialog>
+                        <DialogTrigger>
+                            <div className='flex items-center gap-3 text-sm text-gray-600 hover:bg-gray-100 cursor-pointer px-3 py-2 rounded'>
+                                <Pencil className='h-4 w-4' />
+                                <p>Rename</p>
+                            </div>
+                            <RenameDialogBox file={file} open={open} setOpen={setOpen} />
+                        </DialogTrigger>
+                    </Dialog>
                     <div
                         className='flex items-center gap-3 text-sm text-gray-600 hover:bg-gray-100 cursor-pointer px-3 py-2 rounded'
                         onClick={handleDoArchieve}
@@ -113,23 +152,6 @@ export function ArchiveDropdownMenu({ file, open, setOpen }: IDropdownMenuProps)
         }
     };
 
-    const handleDeleteFile = async () => {
-        try {
-            if (file._id) {
-                await convex.mutation(api.files.deleteFile, {
-                    fileId: file._id,
-                });
-                toast('Your file has been deleted successfully.');
-            }
-        } catch (error) {
-            console.log(error);
-            toast('Oops, something went wrong !');
-        } finally {
-            setOpen(false);
-            getAllTeamFiles();
-        }
-    };
-
     if (!open) return null;
     return (
         <div className='absolute top-[80%] right-8 z-50'>
@@ -142,13 +164,13 @@ export function ArchiveDropdownMenu({ file, open, setOpen }: IDropdownMenuProps)
                         <ArchiveRestore className='h-4 w-4' />
                         <p>Unarchieve</p>
                     </div>
-                    <div
-                        className='flex items-center gap-3 text-sm text-gray-600 hover:bg-red-50 hover:text-red-400 cursor-pointer px-3 py-2 rounded'
-                        onClick={handleDeleteFile}
-                    >
-                        <Trash className='h-4 w-4' />
-                        <p>Delete Permanently</p>
-                    </div>
+                    <DialogTrigger>
+                        <div className='flex items-center gap-3 text-sm text-gray-600 hover:bg-red-50 hover:text-red-400 cursor-pointer px-3 py-2 rounded'>
+                            <Trash className='h-4 w-4' />
+                            <p>Delete Permanently</p>
+                        </div>
+                        <DeleteConfirmationDialogBox file={file} open={open} setOpen={setOpen} />
+                    </DialogTrigger>
                 </div>
             </div>
         </div>

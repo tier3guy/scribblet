@@ -113,7 +113,6 @@ export const updateFileName = mutation({
         const { fileId, fileName } = args;
         return await ctx.db.patch(fileId, {
             fileName,
-            lastEditedAt: Date.now(),
         });
     },
 });
@@ -125,5 +124,27 @@ export const deleteFile = mutation({
     handler: async (ctx, args) => {
         const { fileId } = args;
         return await ctx.db.delete(fileId);
+    },
+});
+
+export const duplicateFile = mutation({
+    args: {
+        fileName: v.string(),
+        teamId: v.string(),
+        teamName: v.string(),
+        authorId: v.string(),
+        authorEmail: v.string(),
+        isPrivate: v.boolean(),
+        document: v.string(),
+        canvas: v.string(),
+        isArchieved: v.boolean(),
+        collaborators: v.array(v.string()),
+    },
+    handler: async (ctx, args) => {
+        return await ctx.db.insert('files', {
+            ...args,
+            lastEditedAt: Date.now(),
+            fileName: `Copy of ${args.fileName}`,
+        });
     },
 });

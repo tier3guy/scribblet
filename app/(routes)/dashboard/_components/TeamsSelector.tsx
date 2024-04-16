@@ -1,18 +1,19 @@
 'use client';
 import { useState } from 'react';
 import { Check, ChevronsUpDown, LogOut, Users, Settings } from 'lucide-react';
-import { LogoutLink } from '@kinde-oss/kinde-auth-nextjs';
+import { LogoutLink, useKindeBrowserClient } from '@kinde-oss/kinde-auth-nextjs';
 import { useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Command, CommandGroup } from '@/components/ui/command';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import useDashboard from '@/hooks/useDashboard';
+import Image from 'next/image';
 
 export default function TeamsSelector() {
     const router = useRouter();
     const { teamsData, userData, selectedTeam } = useDashboard();
-
+    const { user } = useKindeBrowserClient();
     const [open, setOpen] = useState<boolean>(false);
 
     const profile = userData?.firstName ? userData?.firstName[0] : '//';
@@ -85,9 +86,20 @@ export default function TeamsSelector() {
                         </div>
 
                         <div className='flex items-center gap-2 px-2 py-4 border-t-[1px]'>
-                            <div className='w-8 h-8 rounded-full bg-orange-500 text-white grid place-content-center'>
-                                <p>{profile}</p>
-                            </div>
+                            {user?.picture ? (
+                                <Image
+                                    src={user.picture}
+                                    alt='user-picture'
+                                    className='object-contain rounded-full bg-gray-200'
+                                    width={32}
+                                    height={32}
+                                    loading='eager'
+                                />
+                            ) : (
+                                <div className='w-[32px] h-[32px] rounded-full bg-orange-500 text-white grid place-content-center overflow-hidden'>
+                                    <p>{profile}</p>
+                                </div>
+                            )}
                             <div className='flex-1'>
                                 <p className='text-sm'>
                                     {userData?.firstName} {userData?.lastName}

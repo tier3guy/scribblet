@@ -22,6 +22,7 @@ export const createTeam = mutation({
         // Check if a team with the same teamName already exists
         const existingTeam = await ctx.db
             .query('teams')
+            .filter((q) => q.eq(q.field('kindeId'), args.kindeId))
             .filter((q) => q.eq(q.field('teamName'), args.teamName))
             .collect();
 

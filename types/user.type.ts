@@ -5,4 +5,5 @@ export type IUser = {
     firstName: string | null;
     lastName: string | null;
     _creationTime: string | null;
+    picture: string | null;
 };
