@@ -61,23 +61,28 @@ export default function WorkspaceProvider({
             try {
                 const result = await convex.query(api.files.getFile, {
                     fileId,
+                    email: user?.email || '',
                 });
-                if (result.length) {
-                    setFile(result[0]);
-                    setFileName(result[0].fileName);
-                    setDocumentData(JSON.parse(result[0].document));
-                    setCanvasData(JSON.parse(result[0].canvas));
-                } else {
-                    toast('Uhh ohh, File not found !');
-                    router.back();
+                if (result) {
+                    setFile(result);
+                    setFileName(result.fileName);
+                    setDocumentData(JSON.parse(result.document));
+                    setCanvasData(JSON.parse(result.canvas));
                 }
+                // else {
+                //     toast(
+                //         'Uhh ohh, you are not authorized to access this file. Please contact the team admistrator.',
+                //     );
+                //     router.push('/dashboard');
+                //     setIsLoading(false);
+                // }
             } catch (error) {
                 console.log(error);
             } finally {
                 setIsLoading(false);
             }
         }
-    }, [user?.id, convex, fileId, router]);
+    }, [user?.id, convex, fileId, user?.email]);
 
     const saveDocumentData = useCallback(async () => {
         if (editorRef && editorRef.current) {

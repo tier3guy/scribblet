@@ -51,12 +51,19 @@ export const getAllFiles = query({
 export const getFile = query({
     args: {
         fileId: v.string(),
+        email: v.string(),
     },
     handler: async (ctx, args) => {
-        return await ctx.db
+        const result = await ctx.db
             .query('files')
             .filter((q) => q.eq(q.field('_id'), args.fileId))
-            .collect();
+            .unique();
+
+        const ifUserIsAuthorizedToViewFile = result.collaborators.find(
+            (collaborator: any) => collaborator.email === args.email,
+        );
+        if (ifUserIsAuthorizedToViewFile) return result;
+        return null;
     },
 });
 
