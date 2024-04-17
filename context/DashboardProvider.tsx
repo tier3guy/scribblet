@@ -87,8 +87,9 @@ export default function DashboardProvider({
     const getAllTeams = useCallback(async () => {
         try {
             const result = await convex.query(api.teams.getAllTeams, {
-                kindeId: userData?.kindeId!,
+                email: userData?.email!,
             });
+            console.log(result);
 
             if (result.length === 0) {
                 router.push('/teams/create-team');
@@ -98,7 +99,7 @@ export default function DashboardProvider({
         } catch (error) {
             console.log(error);
         }
-    }, [convex, userData?.kindeId, router]);
+    }, [convex, userData?.email, router]);
 
     const createNewFileHandler = async () => {
         toast('Creating a new file ...');
@@ -110,6 +111,7 @@ export default function DashboardProvider({
                 teamId: selectedTeam?._id ? selectedTeam?._id : '',
                 teamName: selectedTeam?.teamName ? selectedTeam?.teamName : '',
                 isPrivate: false,
+                collaborators: selectedTeam?.collaborators || [],
             });
 
             if (result) {

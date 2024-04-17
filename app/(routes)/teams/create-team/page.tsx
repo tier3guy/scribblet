@@ -20,6 +20,7 @@ export default function CreateTeam() {
             setIsLoading(true);
             const result = await convex.mutation(api.teams.createTeam, {
                 kindeId: user?.id || '',
+                email: user?.email || '',
                 teamName,
             });
 

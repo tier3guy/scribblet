@@ -60,7 +60,6 @@ export default function WorkspaceProvider({
             setIsLoading(true);
             try {
                 const result = await convex.query(api.files.getFile, {
-                    authorId: user.id,
                     fileId,
                 });
                 if (result.length) {
@@ -78,7 +77,7 @@ export default function WorkspaceProvider({
                 setIsLoading(false);
             }
         }
-    }, [user, fileId, convex, router]);
+    }, [user?.id, convex, fileId, router]);
 
     const saveDocumentData = useCallback(async () => {
         if (editorRef && editorRef.current) {

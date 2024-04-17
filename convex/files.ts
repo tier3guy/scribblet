@@ -9,6 +9,7 @@ export const createFile = mutation({
         authorId: v.string(),
         authorEmail: v.string(),
         isPrivate: v.boolean(),
+        collaborators: v.array(v.any()),
     },
     handler: async (ctx, args) => {
         return await ctx.db.insert('files', {
@@ -17,7 +18,6 @@ export const createFile = mutation({
             document: '',
             canvas: '',
             isArchieved: false,
-            collaborators: [],
         });
     },
 });
@@ -30,7 +30,6 @@ export const getAllTeamFiles = query({
     handler: async (ctx, args) => {
         return await ctx.db
             .query('files')
-            .filter((q) => q.eq(q.field('authorId'), args.authorId))
             .filter((q) => q.eq(q.field('teamId'), args.teamId))
             .collect();
     },
@@ -44,20 +43,18 @@ export const getAllFiles = query({
     handler: async (ctx, args) => {
         return await ctx.db
             .query('files')
-            .filter((q) => q.eq(q.field('authorId'), args.authorId))
+            .filter((q) => q.eq(q.field('teamId'), args.teamId))
             .collect();
     },
 });
 
 export const getFile = query({
     args: {
-        authorId: v.string(),
         fileId: v.string(),
     },
     handler: async (ctx, args) => {
         return await ctx.db
             .query('files')
-            .filter((q) => q.eq(q.field('authorId'), args.authorId))
             .filter((q) => q.eq(q.field('_id'), args.fileId))
             .collect();
     },
@@ -138,7 +135,7 @@ export const duplicateFile = mutation({
         document: v.string(),
         canvas: v.string(),
         isArchieved: v.boolean(),
-        collaborators: v.array(v.string()),
+        collaborators: v.array(v.any()),
     },
     handler: async (ctx, args) => {
         return await ctx.db.insert('files', {

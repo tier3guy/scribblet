@@ -1,6 +1,8 @@
 import PrimaryButton from '@/components/Buttons/PrimaryButton';
 import useDashboard from '@/hooks/useDashboard';
 import { useEffect, useState } from 'react';
+import { Dialog, DialogTrigger } from '@/components/ui/dialog';
+import InviteCollaboratorDialogBox from './dialogs/InviteCollaboratorDialogBox';
 
 export default function Navbar() {
     const { allFiles, setFiles, activeTab, setActiveTab, setFilesLoading, userData } =
@@ -75,10 +77,15 @@ export default function Navbar() {
                     ))}
                 </ul>
             </div>
-            <PrimaryButton
-                label='Invite a Collaborator'
-                className='px-8 bg-black text-white hover:bg-slate-900 text-sm'
-            />
+            <Dialog>
+                <DialogTrigger>
+                    <PrimaryButton
+                        label='Add a Collaborator'
+                        className='px-8 bg-black text-white hover:bg-slate-900 text-sm'
+                    />
+                </DialogTrigger>
+                <InviteCollaboratorDialogBox />
+            </Dialog>
         </div>
     );
 }

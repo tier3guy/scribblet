@@ -57,7 +57,7 @@ export default function ShareDialogBox({ file }: IShareDialogBox) {
                 className='w-full'
             >
                 <div className='flex items-center gap-3'>
-                    <p className='bg-orange-50 py-1 px-3 rounded text-xs line-clamp-1'>{`http://localhost:3000/workspaces/${file._id}`}</p>
+                    <p className='bg-orange-50 py-1 px-3 rounded text-xs'>{sharableLink}</p>
                     <Copy
                         className='h-4 w-4 text-gray-500 cursor-pointer hover:text-gray-600'
                         onClick={handleCopyLink}
