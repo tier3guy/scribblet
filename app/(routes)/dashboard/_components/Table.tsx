@@ -7,6 +7,7 @@ import { toTimeSinceString } from '@/lib/utils';
 import EmptyBoardScreen from './EmptyBoardScreen';
 import { IFile } from '@/types/file.type';
 import DropdownMenu from './DropdownMenu';
+import { toast } from 'sonner';
 
 export default function Table() {
     const { files, filesLoading } = useDashboard();
@@ -65,10 +66,21 @@ function TableRow({ file }: ITableRow) {
     return (
         <div className='flex text-sm py-3 px-6 cursor-pointer relative'>
             <div className='w-[29%] pe-4'>
-                <Link href={`/workspaces/${file._id}`}>
-                    <div className='flex items-center gap-1'>
-                        {/* <SquareArrowOutUpRight className='w-4' /> */}
-                        <p className='line-clamp-1 overflow-hidden underline'>{file.fileName}</p>
+                <Link
+                    href={`/workspaces/${file._id}`}
+                    onClick={() => {
+                        toast('Setting up the workspace for you. Kindly please wait ...');
+                    }}
+                >
+                    <div className='flex items-center'>
+                        <div className='w-[20px]'>
+                            <SquareArrowOutUpRight size={16} className='mt-[2px]' />
+                        </div>
+                        <div className='flex-1'>
+                            <p className='line-clamp-1 overflow-hidden underline'>
+                                {file.fileName}
+                            </p>
+                        </div>
                     </div>
                 </Link>
             </div>

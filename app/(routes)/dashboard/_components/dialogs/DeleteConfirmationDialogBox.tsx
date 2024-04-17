@@ -53,7 +53,7 @@ export default function DeleteConfirmationDialogBox({
             <DialogFooter>
                 <PrimaryButton
                     label='Delete'
-                    className='text-sm bg-orange-500 text-white'
+                    className='text-sm bg-orange-500 hover:bg-orange-600 text-white'
                     onClick={handleDeleteFile}
                 />
             </DialogFooter>

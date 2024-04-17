@@ -7,38 +7,38 @@ import {
     DialogFooter,
 } from '@/components/ui/dialog';
 import { api } from '@/convex/_generated/api';
-import useDashboard from '@/hooks/useDashboard';
+import useWorkspace from '@/hooks/useWorkspace';
 import { IFile } from '@/types/file.type';
 import { useConvex } from 'convex/react';
 import { useState } from 'react';
 import { toast } from 'sonner';
 
 interface IRenameDialogBox {
-    file: IFile;
-    open: boolean;
-    setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    file: IFile | null;
 }
 
-export default function RenameDialogBox({ file, setOpen }: IRenameDialogBox) {
+export default function RenameDialogBox({ file }: IRenameDialogBox) {
     const convex = useConvex();
-    const { getAllTeamFiles } = useDashboard();
     const [fileName, setFileName] = useState<string>(file?.fileName || '');
+    const [updating, setUpdating] = useState<boolean>(false);
+    const { retrieveFile } = useWorkspace();
 
     const handleRenameFile = async () => {
         try {
-            if (file._id) {
+            setUpdating(true);
+            if (file && file._id) {
                 await convex.mutation(api.files.updateFileName, {
                     fileId: file._id,
                     fileName,
                 });
-                toast('Your file has been renamed successfully.');
             }
-            setOpen(false);
         } catch (error) {
             console.log(error);
             toast('Oops, something went wrong !');
         } finally {
-            getAllTeamFiles();
+            setUpdating(false);
+            toast('Your file has been renamed successfully.');
+            retrieveFile();
         }
     };
 
@@ -65,9 +65,12 @@ export default function RenameDialogBox({ file, setOpen }: IRenameDialogBox) {
             </div>
             <DialogFooter>
                 <PrimaryButton
-                    label='Save Changes'
-                    className='text-sm bg-orange-500 text-white'
-                    onClick={handleRenameFile}
+                    label={updating ? 'Renaming File ...' : 'Save Changes'}
+                    className='text-sm bg-orange-500 hover:bg-orange-600 text-white'
+                    onClick={() => {
+                        if (!updating) handleRenameFile();
+                    }}
+                    disabled={updating}
                 />
             </DialogFooter>
         </DialogContent>

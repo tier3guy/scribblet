@@ -5,9 +5,9 @@ import { useConvex } from 'convex/react';
 import { Link2, Pencil, Archive, Share, Copy, ArchiveRestore, Trash } from 'lucide-react';
 import { toast } from 'sonner';
 import { DialogTrigger, Dialog } from '@/components/ui/dialog';
-import RenameDialogBox from './RenameDialogBox';
-import DeleteConfirmationDialogBox from './DeleteConfirmationDialogBox';
-import ShareDialogBox from './ShareDialogBox';
+import RenameDialogBox from './dialogs/RenameDialogBox';
+import DeleteConfirmationDialogBox from './dialogs/DeleteConfirmationDialogBox';
+import ShareDialogBox from './dialogs/ShareDialogBox';
 
 interface IDropdownMenuProps {
     file: IFile;

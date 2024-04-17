@@ -23,7 +23,6 @@ interface IWorspaceContext {
     canvasData: any;
     setCanvasData: React.Dispatch<React.SetStateAction<any>>;
     loading: boolean;
-    isSavingDocument: boolean;
     editorRef: React.MutableRefObject<EditorJS | undefined>;
     uploadCanvas: (data: any) => void;
     retrieveFile: () => void;
@@ -49,7 +48,6 @@ export default function WorkspaceProvider({
     const [file, setFile] = useState<IFile | null>(null);
 
     const [loading, setIsLoading] = useState<boolean>(true);
-    const [isSavingDocument, setIsSavingDocument] = useState<boolean>(false);
 
     const [canvasData, setCanvasData] = useState<any>(null);
     const [documentData, setDocumentData] = useState<any>(documentPlaceholderData);
@@ -76,7 +74,6 @@ export default function WorkspaceProvider({
                 }
             } catch (error) {
                 console.log(error);
-                // toast('Uhh ohh, Something went wrong. Please try again later');
             } finally {
                 setIsLoading(false);
             }
@@ -105,7 +102,6 @@ export default function WorkspaceProvider({
         async (data = null) => {
             if (file?._id && !loading) {
                 try {
-                    setIsSavingDocument(true);
                     await convex.mutation(api.files.updateCanvas, {
                         fileId: file._id,
                         updatedCanvas: data ? data : JSON.stringify(canvasData),
@@ -113,8 +109,6 @@ export default function WorkspaceProvider({
                 } catch (error) {
                     toast('Oops, Error occured while saving your data !');
                     console.log(error);
-                } finally {
-                    setIsSavingDocument(false);
                 }
             }
         },
@@ -124,7 +118,6 @@ export default function WorkspaceProvider({
     const uploadData = useCallback(async () => {
         if (!file?._id || loading) return;
         try {
-            setIsSavingDocument(true);
             await convex.mutation(api.files.updateFile, {
                 fileId: file._id,
                 updatedDocument: JSON.stringify(documentData),
@@ -132,8 +125,6 @@ export default function WorkspaceProvider({
         } catch (error) {
             toast('Oops, Error occured while saving your data !');
             console.log(error);
-        } finally {
-            setIsSavingDocument(false);
         }
     }, [convex, documentData, file, loading]);
 
@@ -153,7 +144,7 @@ export default function WorkspaceProvider({
                 clearInterval(saveIntervalRef.current);
             }
         };
-    }, [saveDocumentData, uploadCanvas]);
+    }, [saveDocumentData]);
 
     useEffect(() => {
         uploadData();
@@ -172,7 +163,6 @@ export default function WorkspaceProvider({
         setCanvasData,
         loading,
         editorRef,
-        isSavingDocument,
         uploadCanvas,
         retrieveFile,
     };
