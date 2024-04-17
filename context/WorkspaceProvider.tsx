@@ -26,6 +26,7 @@ interface IWorspaceContext {
     isSavingDocument: boolean;
     editorRef: React.MutableRefObject<EditorJS | undefined>;
     uploadCanvas: (data: any) => void;
+    retrieveFile: () => void;
 }
 
 export const WorkspaceContext = createContext<IWorspaceContext | undefined>(undefined);
@@ -173,6 +174,7 @@ export default function WorkspaceProvider({
         editorRef,
         isSavingDocument,
         uploadCanvas,
+        retrieveFile,
     };
 
     if (loading) return <WorkspaceLoading />;
@@ -180,11 +182,32 @@ export default function WorkspaceProvider({
 }
 
 function WorkspaceLoading() {
+    const messageUpdatesIn = 3000; // Miliseconds
+    const messages: string[] = [
+        'Setting up your workspace ...',
+        'Loading files ...',
+        'Preparing components ...',
+        'Almost there ...',
+    ];
+    const [messageIndex, setMessageIndex] = useState<number>(0);
+
+    useEffect(() => {
+        // Update message every three seconds
+        const interval = setInterval(() => {
+            const lastIndex = messages.length - 1;
+            if (messageIndex < lastIndex) setMessageIndex((prev) => prev + 1);
+        }, messageUpdatesIn);
+
+        // Clear interval on component unmount
+        return () => clearInterval(interval);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [messages.length, setMessageIndex]);
+
     return (
         <div className='h-screen w-screen grid place-content-center'>
             <div className='flex flex-col items-center gap-3'>
                 <Spinner />
-                <p>Setting up your workspace ...</p>
+                <p>{messages[messageIndex] ? messages[messageIndex] : 'Almost there ...'}</p>
             </div>
         </div>
     );
