@@ -5,6 +5,8 @@ import { TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { useEffect, useState } from 'react';
 import { CircleDot } from 'lucide-react';
+import { Dialog, DialogTrigger } from '@/components/ui/dialog';
+import InviteCollaboratorDialogBox from './dialogs/InviteFileCollaborator';
 
 export default function Navbar() {
     const { tabsItems, fileName } = useWorkspace();
@@ -70,10 +72,15 @@ export default function Navbar() {
                     <CircleDot className='h-4 w-4 text-gray-400' />
                     Saving
                 </p>
-                <PrimaryButton
-                    className='text-sm bg-orange-500 hover:bg-orange-400 text-white py-2'
-                    label='Invite'
-                />
+                <Dialog>
+                    <DialogTrigger>
+                        <PrimaryButton
+                            className='text-sm bg-orange-500 hover:bg-orange-400 text-white py-2'
+                            label='Invite'
+                        />
+                        <InviteCollaboratorDialogBox />
+                    </DialogTrigger>
+                </Dialog>
             </div>
         </div>
     );

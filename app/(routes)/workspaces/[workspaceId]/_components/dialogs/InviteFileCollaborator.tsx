@@ -19,18 +19,22 @@ import {
     TelegramShareButton,
     TelegramIcon,
 } from 'next-share';
-import useDashboard from '@/hooks/useDashboard';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import PrimaryButton from '@/components/Buttons/PrimaryButton';
 import { useConvex } from 'convex/react';
 import { api } from '@/convex/_generated/api';
+import useWorkspace from '@/hooks/useWorkspace';
+import { useKindeBrowserClient } from '@kinde-oss/kinde-auth-nextjs';
 import { DOMAIN } from '@/constants';
 
 export default function InviteCollaboratorDialogBox() {
-    const [collaboratorAdded, setCollaboratorAdded] = useState<boolean>(true);
+    const [collaboratorAdded, setCollaboratorAdded] = useState<boolean>(false);
+    useEffect(() => {
+        setCollaboratorAdded(false);
+    }, []);
 
     return (
-        <DialogContent className='outline-none border-none focus:outline-none focus:border-none'>
+        <DialogContent>
             {collaboratorAdded ? (
                 <ShareTeamLinkComponent setCollaboratorAdded={setCollaboratorAdded} />
             ) : (
@@ -47,14 +51,15 @@ interface IInviteCollaboratorComponent {
 function InviteCollaboratorComponent({ setCollaboratorAdded }: IInviteCollaboratorComponent) {
     const convex = useConvex();
     const [collaboratorMail, setCollaboratorMail] = useState<string>('');
-    const { selectedTeam, userData } = useDashboard();
-    const handleAddCollaborator = async () => {
+    const { file } = useWorkspace();
+    const { user } = useKindeBrowserClient();
+
+    const handleAddFileCollaborator = async () => {
         try {
-            const result = await convex.mutation(api.teams.addCollaborator, {
-                teamId: selectedTeam?._id || '',
-                host: userData?.email || '',
+            const result = await convex.mutation(api.files.addCollaborator, {
+                fileId: file?._id || '',
+                host: user?.email || '',
                 collaboratorMail: collaboratorMail,
-                isAdmin: false,
             });
             if (result?.error) {
                 toast(`${result?.error}`);
@@ -67,11 +72,13 @@ function InviteCollaboratorComponent({ setCollaboratorAdded }: IInviteCollaborat
             toast('Oops! something went wrong !');
         }
     };
+
     return (
         <DialogHeader>
             <DialogTitle>Enter the Email ID of the Collaborator</DialogTitle>
             <DialogDescription>
-                Please add the email of the person who you want to invite
+                Please note that the collaborator will be added to this file only not in the whole
+                team.
             </DialogDescription>
 
             <div
@@ -92,7 +99,7 @@ function InviteCollaboratorComponent({ setCollaboratorAdded }: IInviteCollaborat
                 <PrimaryButton
                     label='Add Collaborator'
                     className='text-sm bg-orange-500 hover:bg-orange-600 text-white'
-                    onClick={handleAddCollaborator}
+                    onClick={handleAddFileCollaborator}
                 />
             </DialogFooter>
         </DialogHeader>
@@ -104,10 +111,10 @@ interface IShareTeamLinkComponent {
 }
 
 function ShareTeamLinkComponent({ setCollaboratorAdded }: IShareTeamLinkComponent) {
-    const { selectedTeam } = useDashboard();
+    const { file } = useWorkspace();
 
-    const sharableLink: string = `${DOMAIN}/dashboard?teamId=${selectedTeam?._id}`;
-    const quote: string = `Hey, you have been added to ${selectedTeam?.teamName} on Scribblet. Check it out here!`;
+    const sharableLink: string = `${DOMAIN}/worksspaces/${file?._id}`;
+    const quote: string = `Hey, you have been added to ${file?.fileName} to collaborate on Scribblet. Check it out here!`;
 
     const handleCopyLink = async () => {
         try {

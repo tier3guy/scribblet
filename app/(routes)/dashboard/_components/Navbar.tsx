@@ -80,8 +80,8 @@ export default function Navbar() {
             <Dialog>
                 <DialogTrigger>
                     <PrimaryButton
-                        label='Add a Collaborator'
-                        className='px-8 bg-black text-white hover:bg-slate-900 text-sm'
+                        label='Add Team Collaborator'
+                        className='px-6 bg-black text-white hover:bg-slate-900 text-sm'
                     />
                 </DialogTrigger>
                 <InviteCollaboratorDialogBox />

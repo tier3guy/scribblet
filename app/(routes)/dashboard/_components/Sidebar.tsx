@@ -1,6 +1,6 @@
 import Logo from '@/components/Logo';
 import TeamsSelector from './TeamsSelector';
-import { Paperclip, Archive, Github, Flag, Home } from 'lucide-react';
+import { Paperclip, Archive, Github, Flag, Home, ReceiptText } from 'lucide-react';
 import useDashboard from '@/hooks/useDashboard';
 import { useEffect } from 'react';
 import Link from 'next/link';
@@ -44,12 +44,12 @@ export default function Sidebar() {
                         shortcut='H'
                         active={activeTab === 'Home'}
                     />
-                    <SidebarButton
+                    {/* <SidebarButton
                         label='Getting Started'
                         icon={<Flag size={16} />}
                         shortcut='S'
                         active={activeTab === 'Getting Started'}
-                    />
+                    /> */}
                     <SidebarButton
                         label='Create New File'
                         icon={<Paperclip size={16} />}

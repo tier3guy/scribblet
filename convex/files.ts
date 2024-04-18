@@ -152,3 +152,71 @@ export const duplicateFile = mutation({
         });
     },
 });
+
+export const addCollaborator = mutation({
+    args: {
+        fileId: v.id('files'),
+        host: v.string(),
+        collaboratorMail: v.string(),
+    },
+    handler: async (ctx, args) => {
+        const { host, fileId } = args;
+        const file = await ctx.db
+            .query('files')
+            .filter((q) => q.eq(q.field('_id'), fileId))
+            .unique();
+        if (!file) {
+            return {
+                error: 'Oops! No such file have been found',
+                data: null,
+            };
+        }
+
+        const author = file.authorEmail;
+
+        // Hosts Validation
+        if (!author || author !== host) {
+            return {
+                error: 'Oops! You do not have any previlage to invite people on the team. Only Author of the file can add collaborators.',
+                data: null,
+            };
+        }
+
+        // Host's validation success
+        // Check if invitee is already in the list or not
+        const collaboratorsMails = file.collaborators;
+        const ifAlreadyInvited = collaboratorsMails.find(
+            (c: any) => c.email === args.collaboratorMail,
+        );
+
+        if (ifAlreadyInvited) {
+            return {
+                error: `User with email ${args.collaboratorMail} has been already invited to this team`,
+                data: null,
+            };
+        }
+
+        // Add the collaborator to the team
+        try {
+            await ctx.db.patch(args.fileId, {
+                collaborators: [
+                    ...collaboratorsMails,
+                    {
+                        email: args.collaboratorMail,
+                        isAdmin: false,
+                    },
+                ],
+            });
+            return {
+                error: null,
+                data: null,
+            };
+        } catch (error) {
+            // Error handling
+            return {
+                error: error,
+                data: null,
+            };
+        }
+    },
+});

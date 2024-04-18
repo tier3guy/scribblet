@@ -80,7 +80,7 @@ export const addCollaborator = mutation({
             .unique();
         if (!team) {
             return {
-                error: 'No such team Found',
+                error: 'Oops! No such team Found',
                 data: null,
             };
         }
@@ -91,7 +91,7 @@ export const addCollaborator = mutation({
         const hostsInfo = collaboratorsMails.find((c: any) => c.email === host);
         if (!hostsInfo || !hostsInfo?.isAdmin) {
             return {
-                error: 'You do not have any previlage to invite people on the team.',
+                error: 'Oops! You do not have any previlage to invite people on the team. Only admin of the team can add collaborators.',
                 data: null,
             };
         }
@@ -104,7 +104,7 @@ export const addCollaborator = mutation({
 
         if (ifAlreadyInvited) {
             return {
-                error: `User with email ${args.collaboratorMail} has been already invited to this team`,
+                error: `User with email ${args.collaboratorMail} has been already added to this team`,
                 data: null,
             };
         }

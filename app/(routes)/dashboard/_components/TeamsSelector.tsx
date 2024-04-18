@@ -65,18 +65,19 @@ export default function TeamsSelector() {
                     <CommandGroup className='flex flex-col'>
                         <div className='flex flex-col gap-[2px] px-[1px] py-2 border-t-[1px]'>
                             <SelectorButton
-                                label='Create or Join Team'
+                                label='Create Team'
                                 icon={<Users className='text-gray-400' size='18' />}
                                 onClick={() => {
                                     router.push('/teams/create-team');
                                 }}
                             />
 
-                            <SelectorButton
+                            {/* <SelectorButton
                                 label='Settings'
                                 icon={<Settings className='text-gray-400' size='18' />}
                                 shortcutKey='ALT + S'
-                            />
+                                className='cursor-not-allowed'
+                            /> */}
                             <LogoutLink className='hover:bg-gray-50 rounded'>
                                 <SelectorButton
                                     label='Logout'
@@ -121,6 +122,7 @@ interface ISelectorButton {
     label: string;
     onClick?: () => void;
     shortcutKey?: string;
+    className?: string;
 }
 
 function SelectorButton({
@@ -128,10 +130,14 @@ function SelectorButton({
     icon = null,
     onClick = () => {},
     shortcutKey = '',
+    className = '',
 }: ISelectorButton) {
     return (
         <button
-            className='flex items-center justify-between py-[6px] px-2 rounded hover:bg-gray-50'
+            className={cn(
+                'flex items-center justify-between py-[6px] px-2 rounded hover:bg-gray-50',
+                className,
+            )}
             onClick={onClick}
         >
             <div className='flex items-center gap-2'>

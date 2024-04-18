@@ -1,18 +1,14 @@
+export type TMODE = 'DEV' | 'PROD';
+export const MODE: TMODE = 'DEV';
+
 export const documentPlaceholderData = {
     time: Date.now(),
     blocks: [
         {
             type: 'header',
             data: {
-                text: 'Untitled File',
-                level: 2,
-            },
-        },
-        {
-            type: 'header',
-            data: {
                 text: 'Welcome to Scribblet',
-                level: 3,
+                level: 2,
             },
         },
         {
@@ -24,3 +20,6 @@ export const documentPlaceholderData = {
     ],
     version: '2.8.1',
 };
+
+export const DOMAIN =
+    (MODE as string) === 'DEV' ? 'http://localhost:3000' : 'https://www.scribblet.in';

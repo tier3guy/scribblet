@@ -89,7 +89,6 @@ export default function DashboardProvider({
             const result = await convex.query(api.teams.getAllTeams, {
                 email: userData?.email!,
             });
-            console.log(result);
 
             if (result.length === 0) {
                 router.push('/teams/create-team');
