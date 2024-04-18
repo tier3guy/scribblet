@@ -27,13 +27,24 @@ export default function Navbar() {
 
     useEffect(() => {
         if (activeTab === 'Archive') {
-            const _files = allFiles.filter((f) => f.isArchieved === true);
+            const _files = allFiles.filter(
+                (f) =>
+                    f.isArchieved &&
+                    (!f.isPrivate || (f.isPrivate && f.authorEmail === userData?.email)),
+            );
             setFiles(_files);
         } else if (activeNavlink === 'All Files') {
-            const _files = allFiles.filter((f) => f.isArchieved === false);
+            const _files = allFiles.filter((f) => f.isArchieved === false && f.isPrivate === false);
             setFiles(_files);
         } else if (activeNavlink === 'Created by Me') {
-            const _files = allFiles.filter((f) => f.authorEmail === userData?.email);
+            const _files = allFiles.filter(
+                (f) => f.authorEmail === userData?.email && f.isPrivate === false,
+            );
+            setFiles(_files);
+        } else if (activeNavlink === 'Private Files') {
+            const _files = allFiles.filter(
+                (f) => f.authorEmail === userData?.email && f.isPrivate === true,
+            );
             setFiles(_files);
         }
 

@@ -94,6 +94,19 @@ export const updateArchieveStatus = mutation({
     },
 });
 
+export const updatePrivateStatus = mutation({
+    args: {
+        fileId: v.id('files'),
+        isPrivate: v.boolean(),
+    },
+    handler: async (ctx, args) => {
+        const { fileId, isPrivate } = args;
+        return await ctx.db.patch(fileId, {
+            isPrivate: isPrivate,
+        });
+    },
+});
+
 export const updateCanvas = mutation({
     args: {
         fileId: v.id('files'),

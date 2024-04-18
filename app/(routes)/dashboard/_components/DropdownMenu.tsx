@@ -2,7 +2,17 @@ import { api } from '@/convex/_generated/api';
 import useDashboard from '@/hooks/useDashboard';
 import { IFile } from '@/types/file.type';
 import { useConvex } from 'convex/react';
-import { Link2, Pencil, Archive, Share, Copy, ArchiveRestore, Trash } from 'lucide-react';
+import {
+    Link2,
+    Pencil,
+    Archive,
+    Share,
+    Copy,
+    ArchiveRestore,
+    Trash,
+    Lock,
+    Globe,
+} from 'lucide-react';
 import { toast } from 'sonner';
 import { DialogTrigger, Dialog } from '@/components/ui/dialog';
 import RenameDialogBox from './dialogs/RenameDialogBox';
@@ -18,6 +28,8 @@ interface IDropdownMenuProps {
 export function HomeDropdownMenu({ file, open, setOpen }: IDropdownMenuProps) {
     const convex = useConvex();
     const { getAllTeamFiles, userData } = useDashboard();
+
+    const isAdmin = file?.authorEmail === userData?.email;
 
     const handleDoArchieve = async () => {
         try {
@@ -79,6 +91,26 @@ export function HomeDropdownMenu({ file, open, setOpen }: IDropdownMenuProps) {
         }
     };
 
+    const handleTogglePrivateStatus = async () => {
+        try {
+            if (file._id) {
+                await convex.mutation(api.files.updatePrivateStatus, {
+                    fileId: file._id,
+                    isPrivate: file?.isPrivate ? false : true,
+                });
+                toast(
+                    `Your file has been moved to ${file?.isPrivate ? 'public' : 'private'} domain successfully.`,
+                );
+            }
+        } catch (error) {
+            console.log(error);
+            toast('Oops, something went wrong !');
+        } finally {
+            setOpen(false);
+            getAllTeamFiles();
+        }
+    };
+
     if (!open) return null;
     return (
         <div className='absolute top-[80%] right-8 z-50'>
@@ -116,6 +148,19 @@ export function HomeDropdownMenu({ file, open, setOpen }: IDropdownMenuProps) {
                             <RenameDialogBox file={file} open={open} setOpen={setOpen} />
                         </DialogTrigger>
                     </Dialog>
+                    {isAdmin && (
+                        <div
+                            className='flex items-center gap-3 text-sm text-gray-600 hover:bg-gray-100 cursor-pointer px-3 py-2 rounded'
+                            onClick={handleTogglePrivateStatus}
+                        >
+                            {file?.isPrivate ? (
+                                <Globe className='h-4 w-4' />
+                            ) : (
+                                <Lock className='h-4 w-4' />
+                            )}
+                            <p>{file?.isPrivate ? 'Make Public' : 'Make Private'}</p>
+                        </div>
+                    )}
                     <div
                         className='flex items-center gap-3 text-sm text-gray-600 hover:bg-gray-100 cursor-pointer px-3 py-2 rounded'
                         onClick={handleDoArchieve}
