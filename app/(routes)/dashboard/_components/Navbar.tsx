@@ -12,9 +12,9 @@ export default function Navbar() {
         {
             label: 'All Files',
         },
-        {
-            label: 'Recents',
-        },
+        // {
+        //     label: 'Recents',
+        // },
         {
             label: 'Created by Me',
         },
