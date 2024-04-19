@@ -27,7 +27,7 @@ Scribblet is an open-source platform designed to revolutionize the way you creat
 1. Clone the repository:
 
     ```bash
-    git clone https://github.com/your-username/scribblet.git
+    git clone https://github.com/tier3guy/scribblet.git
     ```
 
 2. Navigate to the project directory:
@@ -72,7 +72,7 @@ Enjoying Scribblet? Fuel our passion by buying us a coffee on BuyMeACoffee! Your
 
 ## License
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License. See the [LICENSE](LICENSE.md) file for details.
 
 ## Acknowledgments
 
