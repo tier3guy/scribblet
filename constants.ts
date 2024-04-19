@@ -1,5 +1,4 @@
-export type TMODE = 'DEV' | 'PROD';
-export const MODE: TMODE = 'DEV';
+export const MODE: string = process.env.MODE || 'DEV';
 
 export const documentPlaceholderData = {
     time: Date.now(),
@@ -22,4 +21,4 @@ export const documentPlaceholderData = {
 };
 
 export const DOMAIN =
-    (MODE as string) === 'DEV' ? 'http://localhost:3000' : 'https://www.scribblet.in';
+    (MODE as string) === 'DEV' ? 'http://localhost:3000' : 'https://scribblet.vercel.app';
