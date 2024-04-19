@@ -5,6 +5,7 @@ import ConvexClientProvider from '@/context/ConvexClientProvider';
 import { Toaster } from '@/components/ui/sonner';
 import { Dialog } from '@/components/ui/dialog';
 import { TooltipProvider } from '@/components/ui/tooltip';
+import { Suspense } from 'react';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -25,12 +26,14 @@ export default function RootLayout({
                 <link rel='apple-touch-icon' href='/favicon.svg' type='image/svg' />
             </head>
             <body className={inter.className}>
-                <TooltipProvider>
-                    <Dialog>
-                        <ConvexClientProvider>{children}</ConvexClientProvider>
-                    </Dialog>
-                </TooltipProvider>
-                <Toaster />
+                <Suspense>
+                    <TooltipProvider>
+                        <Dialog>
+                            <ConvexClientProvider>{children}</ConvexClientProvider>
+                        </Dialog>
+                    </TooltipProvider>
+                    <Toaster />
+                </Suspense>
             </body>
         </html>
     );
