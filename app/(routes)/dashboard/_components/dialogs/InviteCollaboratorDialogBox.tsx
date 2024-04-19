@@ -27,7 +27,7 @@ import { api } from '@/convex/_generated/api';
 import { DOMAIN } from '@/constants';
 
 export default function InviteCollaboratorDialogBox() {
-    const [collaboratorAdded, setCollaboratorAdded] = useState<boolean>(true);
+    const [collaboratorAdded, setCollaboratorAdded] = useState<boolean>(false);
 
     return (
         <DialogContent className='outline-none border-none focus:outline-none focus:border-none'>
