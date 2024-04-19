@@ -1,9 +1,5 @@
 ![Banner](/public/banner.png)
 
-# Scribblet: The Ultimate Documentation and Collaboration Platform
-
-## Overview
-
 Scribblet is an open-source platform designed to revolutionize the way you create, collaborate, and manage documentation. Built with a focus on flexibility and functionality, Scribblet combines markdown documentation with dynamic image illustrations using an integrated draw board feature.
 
 ## Features
