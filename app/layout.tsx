@@ -19,7 +19,7 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html lang='en'>
+        <html lang='en' className='scroll-smooth'>
             <head>
                 <link href='/favicon.svg' rel='icon' type='image/svg' />
                 <link rel='apple-touch-icon' href='/favicon.svg' type='image/svg' />

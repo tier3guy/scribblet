@@ -8,22 +8,23 @@ export default function Hero() {
     const { user } = useKindeBrowserClient();
 
     return (
-        <div className='bg-white w-full h-screen grid place-content-center'>
-            <div className='flex flex-col items-center gap-6'>
-                <Badge label='Engineering Documenting Platform' />
-
+        <div className='bg-white w-full grid place-content-center'>
+            <div className='flex flex-col items-center gap-6 mt-[10%]'>
                 <div>
-                    <h1 className='text-center w-2/3 font-bold text-6xl m-auto leading-[1.2em]'>
-                        Documents & <span className='text-orange-500'>diagrams</span> for{' '}
-                        <span className='text-gray-400'>engineering</span> teams
+                    <h1 className='text-center w-2/3 font-bold text-5xl m-auto leading-[1.2em]'>
+                        <span className='text-orange-500'>Scribblet</span>{' '}
+                        <span className='text-gray-400'>
+                            : The Ultimate Documentation and Collaboration
+                        </span>{' '}
+                        Platform
                     </h1>
-                    <p className='mt-4 text-lg text-center'>
-                        All-in-one markdown editor, collaborative canvas, and diagram-as-code
-                        builder
+                    <p className='mt-4 mx-auto w-1/2 text-lg text-center'>
+                        Empower Your Documentation Process with Scribblet: Collaborate, Create, and
+                        Customize with Ease. Join the Revolution Today!
                     </p>
                 </div>
 
-                <div className='flex items-center gap-3'>
+                <div className='flex items-center gap-3 mb-6'>
                     <Link href={user ? '/dashboard' : '/api/auth/login'}>
                         <PrimaryButton
                             label='Try Scribblet for free'

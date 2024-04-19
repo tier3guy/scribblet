@@ -1,36 +1,84 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Scribblet: The Ultimate Documentation and Collaboration Platform
+
+## Overview
+
+Scribblet is an open-source platform designed to revolutionize the way you create, collaborate, and manage documentation. Built with a focus on flexibility and functionality, Scribblet combines markdown documentation with dynamic image illustrations using an integrated draw board feature.
+
+## Features
+
+-   **Markdown Documentation**: Create and edit markdown files effortlessly.
+-   **Integrated Draw Board**: Sketch intricate software architectures and illustrations alongside your documentation.
+-   **Team Collaboration**: Establish teams and invite collaborators to work together seamlessly.
+-   **Private Files**: Safeguard sensitive information with private files accessible only to you and selected collaborators.
+-   **File Management**: Archive, unarchive, and permanently delete files with ease.
+-   **Free and Unlimited**: Enjoy unlimited access to all features without any charges.
+-   **Open-Source**: Built using Next.js, TypeScript, Tailwind, and Convex. Contribute to our platform and help shape its future!
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+-   Node.js
+-   npm or yarn
+-   Git
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Installation
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. Clone the repository:
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+    ```bash
+    git clone https://github.com/your-username/scribblet.git
+    ```
 
-## Learn More
+2. Navigate to the project directory:
 
-To learn more about Next.js, take a look at the following resources:
+    ```bash
+    cd scribblet
+    ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+3. Install dependencies:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+    ```bash
+    npm install
+    # or
+    yarn install
+    ```
 
-## Deploy on Vercel
+4. Start the development server:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+    ```bash
+    npm run dev
+    # or
+    yarn dev
+    ```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## Contributing
+
+We welcome contributions from the community! Whether you're a developer, designer, or documentation enthusiast, there are many ways to contribute to Scribblet.
+
+### How to Contribute
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/new-feature`)
+3. Commit your changes (`git commit -m 'Add new feature'`)
+4. Push to the branch (`git push origin feature/new-feature`)
+5. Open a pull request
+
+For more details, please read our [Contributing Guidelines](CONTRIBUTING.md).
+
+## Support Us
+
+Enjoying Scribblet? Fuel our passion by buying us a coffee on BuyMeACoffee! Your support drives our innovation. Thank you!
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+## Acknowledgments
+
+-   Excalidraw for their draw board package
+-   Editor.js for their markdown package
+
+---
+
+Thank you for choosing Scribblet! We hope you find it as exciting and useful as we do. Happy documenting!

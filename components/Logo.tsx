@@ -19,7 +19,7 @@ export default function Logo({ className = '', varient = 'default' }: ILogo) {
     return (
         <Link href={'/'}>
             <h1 className={cn('text-lg text-white', className)}>
-                <span className='text-xl font-bold'>{'//'}</span> scribblet
+                <span className={cn('text-xl font-bold', className)}>{'//'}</span> scribblet
             </h1>
         </Link>
     );

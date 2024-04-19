@@ -18,24 +18,24 @@ export default function Navbar() {
         },
         {
             name: 'Features',
-            path: '/features',
+            path: '#features',
         },
         {
             name: 'About',
-            path: '/about',
+            path: '#about',
         },
         {
             name: 'Pricing',
-            path: '/pricing',
+            path: '#features',
         },
         {
-            name: 'Blog',
-            path: '/blog',
+            name: 'Github',
+            path: 'https://github.com/tier3guy/scribblet',
         },
-        {
-            name: 'Use Cases',
-            path: '/use-cases',
-        },
+        // {
+        //     name: 'Use Cases',
+        //     path: '/use-cases',
+        // },
     ];
 
     return (
