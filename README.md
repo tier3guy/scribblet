@@ -1,3 +1,5 @@
+![Banner](/public/banner.png)
+
 # Scribblet: The Ultimate Documentation and Collaboration Platform
 
 ## Overview
