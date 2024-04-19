@@ -1,4 +1,4 @@
-export const MODE: string = process.env.MODE || 'DEV';
+export const MODE: string = process.env.NEXT_PUBLIC_MODE || 'DEV';
 
 export const documentPlaceholderData = {
     time: Date.now(),
